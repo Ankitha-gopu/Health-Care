@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Patient Dashboard - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card p-4 mb-4 bg-success text-white">
+                <h2>Hello, {{ user.first_name }}</h2>
+                <p>Track your appointments and join virtual consultations.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card p-4 shadow-sm">
+                <h4 class="mb-4"><i class="bi bi-calendar2-check"></i> My Appointments</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Speciality</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <span class="fw-bold d-block">Dr. {{ appt.doctor.user.first_name }}</span>
+                                            <span class="badge bg-success-soft text-success small"
+                                                style="font-size: 0.7rem;">
+                                                <i class="bi bi-star-fill"></i> {{ appt.doctor.rating }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ appt.doctor.speciality.name }}</td>
+                                <td>{{ appt.date }}</td>
+                                <td>{{ appt.time_slot }}</td>
+                                <td>
+                                    <span
+                                        class="badge {% if appt.status == 'scheduled' %}bg-warning{% elif appt.status == 'in_progress' %}bg-info{% else %}bg-success{% endif %}">
+                                        {{ appt.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'consultation_room' appt.id %}"
+                                        class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm"
+                                        style="background: #22d3ee; border: none;">
+                                        Join Room <i class="bi bi-camera-video-fill ms-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">You have no appointments. <a
+                                        href="{% url 'home' %}">Book one now!</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function updateTimers() {
+        document.querySelectorAll('[id^="timer-"]').forEach(timerElement => {
+            const apptId = timerElement.id.split('-')[1];
+            // Since we don't have the date string in the DOM for patient yet, let's just use placeholder logic or pass it via data attribute
+            // For simplicity in this demo, I'll recommend the same logic as doctor if we add the data-time attribute
+        });
+    }
+    // Repurposing common timer logic
+</script>
+{% endblock %}

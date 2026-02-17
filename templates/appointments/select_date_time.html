@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Select Appointment Details - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-lg p-4" style="border-radius: 20px;">
+                <h4 class="fw-bold mb-4" style="color: var(--navy-deep);">Select Appointment Details</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Consultancy Date</label>
+                        <div class="input-group">
+                            <input type="date" name="consultancy_date" class="form-control bg-light border-0 py-3"
+                                style="border-radius: 12px;" required id="datePicker">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Consultancy Time</label>
+                        <div class="input-group">
+                            <input type="time" name="consultancy_time" class="form-control bg-light border-0 py-3"
+                                style="border-radius: 12px;" required>
+                        </div>
+                    </div>
+
+                    {% if instant_consult %}
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold shadow-sm mb-3"
+                        style="border-radius: 15px; background: #10b981; border: none;" id="instantConsultBtn">
+                        Consult Instantly <i class="bi bi-lightning-charge-fill ms-2"></i>
+                    </button>
+                    <div class="text-center mb-3">
+                        <span class="text-muted small">OR schedule for later</span>
+                    </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm"
+                        style="border-radius: 15px; background: #22d3ee; border: none;">
+                        Proceed to Checkout <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set minimum date to today
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    document.getElementById('datePicker').setAttribute('min', today);
+
+    {% if instant_consult %}
+    document.getElementById('instantConsultBtn').addEventListener('click', function () {
+        const dateInput = document.querySelector('input[name="consultancy_date"]');
+        const timeInput = document.querySelector('input[name="consultancy_time"]');
+
+        // Use current date and time
+        const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+        dateInput.value = today;
+        timeInput.value = currentTime;
+    });
+    {% endif %}
+</script>
+
+<style>
+    body {
+        background: #f8fafc;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        background: #f1f5f9 !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Finding Doctor - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-5 border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="mb-4">
+                    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h3 class="fw-bold text-navy">Setting up your Consultation...</h3>
+                <p class="text-muted">We are assigning <strong>Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</strong> for
+                    you. Please stay on this page.</p>
+                <div class="alert alert-info border-0 rounded-pill small">
+                    <i class="bi bi-info-circle-fill me-2"></i> Our average wait time is less than 2 minutes.
+                </div>
+
+                <!-- Manual Join Button -->
+                <div class="mt-4">
+                    <a href="{% url 'consultation_room' appointment.id %}"
+                        class="btn btn-success btn-lg rounded-pill px-5 fw-bold shadow-lg"
+                        style="background: #10b981; border: none;">
+                        Join Room Now <i class="bi bi-camera-video-fill ms-2"></i>
+                    </a>
+                </div>
+
+                <div class="mt-4">
+                    <img src="{{ appointment.doctor.image_url|default:'https://images.unsplash.com/photo-1576091160550-217359991617?auto=format&fit=crop&q=80&w=200' }}"
+                        class="rounded-circle border shadow-sm p-1"
+                        style="width: 80px; height: 80px; object-fit: cover;">
+                    <p class="small text-muted mt-2">Connecting with {{ appointment.doctor.user.get_full_name }}...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simulate redirection to consultation room after 3 seconds
+    setTimeout(function () {
+        window.location.href = "{% url 'consultation_room' appointment.id %}";
+    }, 3000);
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Patient Registration - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-5 border-0 shadow-lg" style="border-radius: 24px;">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold" style="color: var(--navy-deep); letter-spacing: -1px;">Start your Health Journey
+                    </h2>
+                    <p class="text-muted">Register to book instant consultations with top doctors</p>
+                </div>
+
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted ms-1">{{ field.label }}</label>
+                        {{ field.errors }}
+                        <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}"
+                            class="form-control border-0 bg-light p-3" placeholder="{{ field.label }}"
+                            style="border-radius: 12px;">
+                        {% if field.help_text %}<div class="form-text small opacity-75">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 mt-3 fw-bold shadow-lg"
+                        style="border-radius: 12px;">Join Mediconnect</button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p class="text-muted small mb-0">Already have an account? <a href="{% url 'login_patient' %}"
+                            class="text-decoration-none fw-bold">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

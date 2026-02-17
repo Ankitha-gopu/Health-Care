@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Doctors in {{ speciality.name }} - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-5">
+        <div class="col text-center">
+            <h2 class="fw-bold mb-1" style="color: var(--navy-deep); letter-spacing: -1px;">Available Specialists in {{
+                speciality.name }}</h2>
+            <p class="text-muted small">Top-rated doctors available for instant online consultation</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for doctor in doctors %}
+        <div class="col-md-10 mx-auto">
+            <div class="card p-4 shadow-sm border-0 mb-4 doctor-hover-card"
+                style="border-radius: 20px; background: #fff;">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center border-end border-light">
+                        <div class="mb-3">
+                            <img src="{{ doctor.image_url|default:'https://i.pravatar.cc/100' }}"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;"
+                                alt="{{ doctor.user.get_full_name }}">
+                        </div>
+                        <a href="#" class="text-teal-accent small fw-bold text-decoration-none">View Profile</a>
+                    </div>
+                    <div class="col-md-7 ps-md-4">
+                        <h4 class="fw-bold mb-1" style="color: var(--teal-accent);">Dr. {{ doctor.user.first_name }} {{
+                            doctor.user.last_name }}</h4>
+                        <p class="text-muted small mb-3"><strong>{{ doctor.bio }}</strong></p>
+                        <p class="text-muted small mb-0"><i class="bi bi-geo-alt-fill text-teal-accent me-1"></i> {{
+                            doctor.hospital_name }}</p>
+                        <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                            <span class="badge bg-success bg-opacity-10 text-success me-2 px-3 py-2 rounded-pill"><i
+                                    class="bi bi-star-fill small me-1"></i> {{ doctor.rating }}/5</span>
+                            <span class="small text-muted"><i class="bi bi-shield-check text-teal-accent me-1"></i>
+                                Verified Specialist</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <p class="text-muted small mb-1">Consultation Fee</p>
+                        <h5 class="fw-bold mb-4" style="color: var(--navy-deep);">₹ {{ doctor.consultation_fee }}/-</h5>
+                        <a href="{% url 'initialize_consultation' doctor.id %}"
+                            class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col text-center py-5">
+            <p class="lead">No doctors found for this speciality.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">Go Back</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

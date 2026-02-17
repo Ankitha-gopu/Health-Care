@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% block title %}Online Healthcare Consultancy Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: var(--primary-gradient);
+        position: relative;
+        overflow: hidden;
+        border-radius: 0 0 50px 50px;
+        padding: 100px 0;
+        color: white;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -150px;
+        right: -150px;
+        width: 450px;
+        height: 450px;
+        background: rgba(13, 148, 136, 0.15);
+        filter: blur(100px);
+        border-radius: 50%;
+    }
+
+    .speciality-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(13, 148, 136, 0.1);
+        border-radius: 20px;
+        padding: 30px 15px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .speciality-card .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background: var(--accent-gradient-light);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        transition: all 0.5s ease;
+    }
+
+    .speciality-card i {
+        font-size: 2.2rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+        transition: all 0.5s ease;
+    }
+
+    .speciality-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 30px 60px rgba(13, 148, 136, 0.15);
+        border-color: var(--teal-accent);
+        background: white;
+    }
+
+    .speciality-card:hover .icon-wrapper {
+        transform: rotate(10deg);
+        background: var(--accent-gradient);
+    }
+
+    .speciality-card:hover i {
+        -webkit-text-fill-color: white;
+        background: none;
+        color: white;
+    }
+
+    .speciality-card h6 {
+        color: var(--navy-deep);
+        font-weight: 700 !important;
+        margin-bottom: 0 !important;
+        transition: color 0.3s ease;
+    }
+
+    .speciality-card:hover h6 {
+        color: var(--teal-accent);
+    }
+
+    .no-highlight:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: rgba(13, 148, 136, 0.1) !important;
+        background: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .no-highlight:hover .icon-wrapper {
+        transform: none !important;
+        background: var(--accent-gradient-light) !important;
+    }
+
+    .no-highlight:hover i {
+        background: var(--accent-gradient) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    .no-highlight:hover h6 {
+        color: var(--navy-deep) !important;
+    }
+
+    .doctor-hover-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12) !important;
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-family: 'Montserrat', sans-serif !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container position-relative">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span
+                    class="badge rounded-pill bg-white bg-opacity-10 text-white px-4 py-2 mb-4 border border-white border-opacity-10"
+                    style="letter-spacing: 1px; font-weight: 600; font-size: 0.8rem;">PREMIUM HEALTHCARE ACCESS</span>
+                <h1 class="display-3 fw-bold mb-4" style="line-height: 1.1; letter-spacing: -2px;">Skip the
+                    travel!<br>Take <span
+                        style="background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Online
+                        Consultation</span></h1>
+                <p class="lead mb-5 opacity-75" style="font-size: 1.25rem;">Connect with India's most trusted doctors in
+                    minutes. High-quality video consultations designed for your comfort and safety.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'consultation_step1' %}" class="btn btn-primary btn-lg px-5 py-3 shadow-lg">Consult
+                        a Doctor Now</a>
+                    <a href="{% url 'signup_doctor' %}" class="btn btn-outline-light btn-lg px-5 py-3"
+                        style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.2) !important; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); color: white;">Join
+                        as Specialist</a>
+                </div>
+                <div class="mt-5 d-flex align-items-center gap-4 opacity-75">
+                    <div class="d-flex ms-1">
+                        <img src="https://i.pravatar.cc/40?img=1" class="rounded-circle border border-2 border-white"
+                            style="width: 35px; height: 35px; margin-right: -10px;">
+                        <img src="https://i.pravatar.cc/40?img=2" class="rounded-circle border border-2 border-white"
+                            style="width: 35px; height: 35px; margin-right: -10px;">
+                        <img src="https://i.pravatar.cc/40?img=3" class="rounded-circle border border-2 border-white"
+                            style="width: 35px; height: 35px;">
+                    </div>
+                    <span class="small fw-medium">+250 Doctors online now</span>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <div class="hero-image-container p-3"
+                    style="background: rgba(255,255,255,0.05); border-radius: 40px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                    <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=800"
+                        class="img-fluid rounded-4 shadow-2xl" alt="Group of Professional Doctors"
+                        style="border-radius: 30px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="specialities" class="py-5 bg-white">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-1" style="color: var(--navy-deep); letter-spacing: -1px;">25+ Specialities</h2>
+                <p class="text-muted small mb-0">Expert care across every medical field</p>
+            </div>
+            <a href="#" class="btn btn-outline-primary rounded-pill px-4 py-2 small fw-bold"
+                style="border-color: rgba(13, 148, 136, 0.2); color: var(--teal-accent);">View All Categories</a>
+        </div>
+        <div class="row g-4 text-center">
+            {% for item in specialities %}
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card shadow-sm {% if item.name == 'Psychiatrist' %}no-highlight{% endif %}">
+                    <div class="icon-wrapper">
+                        <i class="bi {{ item.icon }}"></i>
+                    </div>
+                    <h6>{{ item.name }}</h6>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Placeholder if no specialities -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card">
+                    <i class="bi bi-person-heart"></i>
+                    <h6 class="fw-bold">Gynaecology</h6>
+                    <p class="small text-muted">₹499</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card">
+                    <i class="bi bi-activity"></i>
+                    <h6 class="fw-bold">Sexology</h6>
+                    <p class="small text-muted">₹499</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                    <h6 class="fw-bold">General Physician</h6>
+                    <p class="small text-muted">₹399</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card">
+                    <i class="bi bi-droplet"></i>
+                    <h6 class="fw-bold">Dermatology</h6>
+                    <p class="small text-muted">₹449</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2">
+                <div class="speciality-card">
+                    <i class="bi bi-heart"></i>
+                    <h6 class="fw-bold">Psychiatry</h6>
+                    <p class="small text-muted">₹499</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-1" style="color: var(--navy-deep); letter-spacing: -1px;">Popular Doctors
+                    Available</h2>
+                <p class="text-muted small mb-0">Highly rated specialists available for instant consultation</p>
+            </div>
+            <a href="#" class="btn btn-outline-primary rounded-pill px-4 py-2 small fw-bold"
+                style="border-color: rgba(13, 148, 136, 0.2); color: var(--teal-accent);">View All Experts</a>
+        </div>
+        <div class="row g-4">
+            <!-- Dr. Ankitha Reddy -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Ankitha Reddy">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Ankitha Reddy</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, MD - DVL</strong></p>
+                            <p class="text-muted small mb-3">Venkat Center for Aesthetic Health, Bengaluru</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.8/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 299.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dr. Harsha Reddy -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Harsha Vardhan">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Harsha Vardhan</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, DNB - General Medicine</strong></p>
+                            <p class="text-muted small mb-3">General Physician • City Hospital, Hyderabad</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.5/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 399.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dr. Jyothi Netha -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Jyothi Netha">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Jyothi Netha</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, DDVL - Dermatology</strong></p>
+                            <p class="text-muted small mb-3">Netha Skin Clinic, Bengaluru</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.7/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 499.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dr. Akshitha Reddy -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1623854767648-e7bb8009f0db?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Akshitha Reddy">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Akshitha Reddy</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, MD - Pediatrics</strong></p>
+                            <p class="text-muted small mb-3">Kids Care Clinic, Mumbai</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.6/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 350.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dr. Samatha -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Samatha">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Samatha Reddy</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, DGO - Gynaecology</strong></p>
+                            <p class="text-muted small mb-3">Women Wellness Center, Pune</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.5/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 450.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dr. Triveni Reddy -->
+            <div class="col-md-12">
+                <div class="card p-4 shadow-sm border-0 mb-3 doctor-hover-card"
+                    style="border-radius: 12px; background: #fff;">
+                    <div class="row align-items-center text-start">
+                        <div class="col-md-2 text-center">
+                            <img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&q=80&w=200"
+                                class="rounded-circle border p-1"
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Dr. Triveni Reddy">
+                            <br><a href="#" class="text-primary small fw-bold text-decoration-none">View Profile</a>
+                        </div>
+                        <div class="col-md-7 border-end border-light">
+                            <h4 class="fw-bold mb-1 text-primary">Dr. Triveni Reddy</h4>
+                            <p class="text-muted small mb-3"><strong>MBBS, MD, DM - Cardiology</strong></p>
+                            <p class="text-muted small mb-3">Apollo Hospital, Delhi</p>
+                            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light">
+                                <span class="badge bg-success me-2 px-2 py-1"><i class="bi bi-star-fill small"></i>
+                                    4.9/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <p class="text-muted small mb-1">Consultation Fee</p>
+                            <h5 class="fw-bold mb-4 text-dark">₹ 599.00/-</h5>
+                            <a href="{% url 'consultation_step1' %}"
+                                class="btn btn-primary btn-lg rounded-pill px-4 w-100 fw-bold shadow-sm">Consult Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

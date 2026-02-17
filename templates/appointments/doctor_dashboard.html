@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}Doctor Dashboard - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card p-4 mb-4 bg-primary text-white border-0 shadow">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2>Welcome, Dr. {{ user.get_full_name|default:user.username }}</h2>
+                        <p class="mb-0">Manage your appointments and virtual consultations here.</p>
+                    </div>
+                    {% if user.doctor_profile %}
+                    <div class="text-end">
+                        <span class="badge bg-white text-primary px-3 py-2">
+                            <i class="bi bi-star-fill me-1"></i> {{ user.doctor_profile.rating }} Rating
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card p-4 shadow-sm">
+                <h4 class="mb-4"><i class="bi bi-calendar-event"></i> Upcoming Appointments</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Meet Link</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr>
+                                <td>{{ appt.patient.get_full_name|default:appt.patient.username }}</td>
+                                <td>{{ appt.date }}</td>
+                                <td>{{ appt.time_slot }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'update_meet_link' appt.id %}" class="d-flex">
+                                        {% csrf_token %}
+                                        <input type="url" name="meet_link" class="form-control form-control-sm me-2"
+                                            value="{{ appt.google_meet_link|default:'' }}"
+                                            placeholder="Google Meet URL">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge {% if appt.status == 'scheduled' %}bg-warning{% elif appt.status == 'in_progress' %}bg-info{% else %}bg-success{% endif %}">
+                                        {{ appt.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if appt.status == 'pending' %}
+                                        <a href="{% url 'approve_appointment' appt.id %}"
+                                            class="btn btn-sm btn-warning text-dark fw-bold">
+                                            <i class="bi bi-check-circle-fill"></i> Approve
+                                        </a>
+                                        {% else %}
+                                        <span id="timer-{{ appt.id }}" class="me-3 fw-bold text-danger"></span>
+                                        {% if appt.google_meet_link %}
+                                        <a href="{{ appt.google_meet_link }}" target="_blank"
+                                            class="btn btn-sm btn-success start-btn" data-id="{{ appt.id }}"
+                                            data-time="{{ appt.date|date:'Y-m-d' }}T{{ appt.time_slot|time:'H:i:s' }}">
+                                            Start Meeting
+                                        </a>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-secondary" disabled>No Link</button>
+                                        {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">No appointments found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function updateTimers() {
+        document.querySelectorAll('.start-btn').forEach(btn => {
+            const apptId = btn.getAttribute('data-id');
+            const apptTime = new Date(btn.getAttribute('data-time'));
+            const now = new Date();
+            const diff = apptTime - now;
+
+            const timerElement = document.getElementById(`timer-${apptId}`);
+
+            if (diff > 0) {
+                const mins = Math.floor(diff / 60000);
+                const secs = Math.floor((diff % 60000) / 1000);
+                timerElement.innerText = `${mins}m ${secs}s`;
+            } else if (diff > -3600000) { // 1 hour window
+                timerElement.innerText = "Live Now";
+                timerElement.classList.remove('text-danger');
+                timerElement.classList.add('text-success');
+            } else {
+                timerElement.innerText = "Expired";
+            }
+        });
+    }
+
+    setInterval(updateTimers, 1000);
+    updateTimers();
+</script>
+{% endblock %}

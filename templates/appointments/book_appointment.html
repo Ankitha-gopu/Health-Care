@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Book Appointment - Mediconnect{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h3 class="mb-4 text-center">Book Your Session</h3>
+                <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
+                    <img src="https://i.pravatar.cc/60?u={{ doctor.user.username }}" class="rounded-circle me-3"
+                        alt="dr">
+                    <div>
+                        <h5 class="mb-0">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h5>
+                        <p class="text-muted small mb-0">{{ doctor.speciality.name }} • ₹{{ doctor.consultation_fee }}
+                        </p>
+                    </div>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Select Date</label>
+                        <input type="date" name="date" class="form-control" required min="{{ today|date:'Y-m-d' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Time Slot</label>
+                        <select name="time_slot" class="form-select" required>
+                            <option value="">Choose a time...</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

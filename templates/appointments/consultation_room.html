@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+{% block title %}Consultancy Room - Mediconnect{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --room-bg: #f8fafc;
+        --card-dark: #1e293b;
+        --cyan-accent: #22d3ee;
+    }
+
+    .room-container {
+        max-width: 1200px;
+        margin: 40px auto;
+    }
+
+    .room-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .room-header h1 {
+        font-weight: 800;
+        color: #0f172a;
+        font-size: 2.5rem;
+    }
+
+    .nav-room {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 15px;
+    }
+
+    .nav-room a {
+        text-decoration: none;
+        color: #64748b;
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-room a.active {
+        color: #0f172a;
+    }
+
+    .video-card {
+        background: var(--card-dark);
+        border-radius: 24px;
+        padding: 60px 40px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .video-icon-bg {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+    }
+
+    .video-icon-bg i {
+        font-size: 2.5rem;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .video-card h2 {
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .video-card p {
+        color: #94a3b8;
+        max-width: 400px;
+        margin: 0 auto 40px;
+        font-size: 1.1rem;
+    }
+
+    .btn-join {
+        background: var(--cyan-accent);
+        color: #0f172a;
+        border: none;
+        padding: 16px 40px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 20px rgba(34, 211, 238, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .btn-join:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(34, 211, 238, 0.4);
+        color: #0f172a;
+    }
+
+    .chat-card {
+        background: white;
+        border-radius: 24px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+        padding: 20px 30px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .chat-header h5 {
+        margin: 0;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .chat-body {
+        height: 350px;
+        padding: 20px;
+        background: #fbfcfe;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .chat-message {
+        padding: 12px 18px;
+        border-radius: 15px;
+        max-width: 80%;
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .bot-message {
+        background: #f1f5f9;
+        color: #1e293b;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+    }
+
+    .user-message {
+        background: var(--cyan-accent);
+        color: #0f172a;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+        font-weight: 500;
+    }
+
+    .prescription-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #10b981;
+        padding: 15px;
+        border-radius: 12px;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .prescription-card h6 {
+        color: #10b981;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+    }
+
+    .chat-input-area {
+        padding: 20px 30px;
+        background: white;
+        display: flex;
+        gap: 15px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    .chat-input-wrapper {
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .chat-input {
+        width: 100%;
+        padding: 12px 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #f8fafc;
+        outline: none;
+        font-size: 0.95rem;
+    }
+
+    .btn-send {
+        background: var(--cyan-accent);
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0f172a;
+    }
+
+    #jitsi-container {
+        width: 100%;
+        height: 650px;
+        border-radius: 20px;
+        overflow: hidden;
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="room-container">
+        <div class="room-header">
+            <h1>Consultancy Room</h1>
+            <div class="d-inline-block bg-white shadow-sm rounded-pill px-5 py-3 mt-3 border">
+                <span class="fw-bold text-primary text-uppercase small ls-1">Doctor:</span>
+                <span class="fw-bold text-dark mx-1">Dr. {{ appointment.doctor.user.first_name }}</span>
+                <span class="mx-3 text-muted opacity-50">|</span>
+                <span class="fw-bold text-primary text-uppercase small ls-1">Patient:</span>
+                <span class="fw-bold text-dark mx-1">{{ appointment.patient.first_name }}</span>
+            </div>
+        </div>
+
+        <div class="nav-room">
+            <a href="#" class="active"><i class="bi bi-camera-video"></i> Video Call</a>
+            <a href="#"><i class="bi bi-chat-dots"></i> Real-Time Chat</a>
+            <a href="#"><i class="bi bi-file-earmark-medical"></i> Digital Prescription</a>
+        </div>
+
+        {% if user.is_doctor %}
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px; overflow: hidden;">
+            <div class="card-header bg-white p-4 border-bottom">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-flex align-items-center justify-content-center"
+                        style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-vcard fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-1 fw-bold text-dark">Patient Details</h5>
+                        <p class="mb-0 text-muted small">Consultation Reference: #{{ appointment.id }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4 bg-light">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <label class="text-uppercase text-secondary fw-bold small mb-1">Patient Name</label>
+                        <p class="fw-semibold text-dark mb-0">{{
+                            appointment.patient_name|default:appointment.patient.get_full_name|default:appointment.patient.username
+                            }}</p>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="text-uppercase text-secondary fw-bold small mb-1">Age / Gender</label>
+                        <p class="fw-semibold text-dark mb-0">
+                            {{ appointment.patient_age|default:"--" }} Yrs / {{ appointment.patient_gender|default:"--"
+                            }}
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="text-uppercase text-secondary fw-bold small mb-1">Contact</label>
+                        <p class="fw-semibold text-dark mb-0">{{ appointment.patient_phone|default:"--" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-uppercase text-secondary fw-bold small mb-1">Reported Symptoms</label>
+                        <p class="fw-semibold text-dark mb-0 text-break">
+                            {% if appointment.symptoms %}
+                            <i class="bi bi-activity text-danger me-1"></i> {{ appointment.symptoms }}
+                            {% else %}
+                            <span class="text-muted fst-italic">No symptoms provided</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="video-card p-0 overflow-hidden position-relative" id="video-welcome-card" style="height: 500px;">
+            <img src="https://img.freepik.com/free-photo/portrait-successful-mid-adult-doctor-with-crossed-arms_1262-12865.jpg"
+                alt="Doctor" class="w-100 h-100 object-fit-cover" style="filter: brightness(0.6);">
+
+            <div class="position-absolute top-50 start-50 translate-middle text-center w-100 px-4">
+                <h2 class="fw-bold text-white mb-3" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Your Doctor is Ready
+                </h2>
+                <p class="text-white-50 mb-4 fs-5" style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Secure, encrypted
+                    video consultation.</p>
+                <button class="btn btn-join btn-lg px-5 py-3 rounded-pill shadow-lg" id="joinCallBtn">
+                    <i class="bi bi-camera-video-fill me-2"></i> Join Consultation
+                </button>
+            </div>
+        </div>
+
+        <div id="jitsi-container"></div>
+
+        <div class="chat-card">
+            <div class="chat-header">
+                <i class="bi bi-robot text-primary fs-4"></i>
+                <h5>Chat & AI Assistant</h5>
+            </div>
+            <div class="chat-body" id="chat-messages">
+                <div class="chat-message bot-message">
+                    Hello! I'm your AI Assistant. Describe your symptoms and I'll provide medicine recommendations &
+                    food advice.
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" class="chat-input"
+                        placeholder="Type symptoms (e.g., I have fever)...">
+                </div>
+                <button class="btn btn-send" id="send-btn">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://8x8.vc/vpaas-magic-cookie-9502b4859a0f44399e52516489379051/external_api.js"></script>
+<script>
+    // Video Call Logic
+    const joinBtn = document.getElementById('joinCallBtn');
+    if (joinBtn) {
+        joinBtn.addEventListener('click', function () {
+            const container = document.getElementById('jitsi-container');
+            const welcomeCard = document.getElementById('video-welcome-card');
+
+            welcomeCard.style.display = 'none';
+            container.style.display = 'block';
+
+            const domain = "8x8.vc";
+            const options = {
+                roomName: "vpaas-magic-cookie-9502b4859a0f44399e52516489379051/Mediconnect-Consult-{{ appointment.id }}",
+                width: "100%",
+                height: "100%",
+                parentNode: container,
+                userInfo: {
+                    displayName: "{% if user.is_doctor %}Dr. {{ user.last_name }}{% else %}{{ user.first_name }}{% endif %}",
+                    avatarUrl: "{% if user.is_doctor %}https://img.freepik.com/free-photo/portrait-successful-mid-adult-doctor-with-crossed-arms_1262-12865.jpg{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}"
+                },
+                interfaceConfigOverwrite: {
+                    TILE_VIEW_MAX_COLUMNS: 8,
+                    SHOW_JITSI_WATERMARK: false,
+                    DEFAULT_REMOTE_DISPLAY_NAME: 'Doctor'
+                },
+                configOverwrite: {
+                    startWithAudioMuted: false,
+                    startWithVideoMuted: false
+                }
+            };
+            const api = new JitsiMeetExternalAPI(domain, options);
+        });
+    }
+
+    // Chatbot Logic
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatMessages = document.getElementById('chat-messages');
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // User Message
+        appendMessage('user', text);
+        chatInput.value = '';
+
+        try {
+            const response = await fetch('{% url "chatbot_response" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ message: text })
+            });
+            const data = await response.json();
+
+            // Bot Response
+            appendMessage('bot', data.message);
+
+            if (data.prescription) {
+                appendPrescription(data.prescription);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            appendMessage('bot', "Sorry, I'm having trouble connecting. Please try again.");
+        }
+    }
+
+    function appendMessage(sender, text) {
+        const div = document.createElement('div');
+        div.className = `chat-message ${sender}-message`;
+        div.textContent = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function appendPrescription(prescription) {
+        const div = document.createElement('div');
+        div.className = 'prescription-card shadow-sm border-0';
+        div.style.borderLeft = '5px solid #22d3ee';
+
+        let html = '';
+
+        // Medicine Section
+        if (prescription.tablets.length > 0 || prescription.syrups.length > 0) {
+            html += '<div class="mb-3">';
+            html += '<h6 class="text-primary fw-bold mb-2"><i class="bi bi-capsule me-2"></i>Recommended Medicine</h6>';
+
+            if (prescription.tablets.length > 0) {
+                html += '<p class="mb-1 small fw-bold text-dark">Tablets:</p><ul class="small mb-2 text-muted">';
+                prescription.tablets.forEach(t => html += `<li>${t}</li>`);
+                html += '</ul>';
+            }
+
+            if (prescription.syrups.length > 0) {
+                html += '<p class="mb-1 small fw-bold text-dark">Syrups:</p><ul class="small mb-2 text-muted">';
+                prescription.syrups.forEach(s => html += `<li>${s}</li>`);
+                html += '</ul>';
+            }
+            html += '</div>';
+        }
+
+        // Food & Diet Section
+        if (prescription.diet) {
+            html += '<div>';
+            html += '<h6 class="text-success fw-bold mb-2"><i class="bi bi-egg-fried me-2"></i>Food & Diet Advice</h6>';
+            html += `<p class="mb-0 small text-muted">${prescription.diet}</p>`;
+            html += '</div>';
+        }
+
+        div.innerHTML = html;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
+{% endblock %}
